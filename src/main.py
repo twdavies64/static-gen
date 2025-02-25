@@ -1,6 +1,6 @@
 import sys
 from textnode import TextNode, TextType
-from htmlnode import HTMLNode
+from htmlnode import HTMLNode, LeafNode
 
 
 def main():
@@ -14,9 +14,15 @@ def main():
             "target": "_blank",
         },
     )
+    lief = LeafNode("p", "This is some text for this paragraph")
+    link_test = LeafNode(
+        "a", "Clicky clicky!", {"href": "https://www.google.com", "target": "_blank"}
+    )
     print(bob)
     print(link)
     print(link.props_to_html())
+    print(lief.to_html())
+    print(link_test.to_html())
 
     return 0
 

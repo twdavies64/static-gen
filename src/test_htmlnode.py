@@ -1,6 +1,6 @@
 import unittest
 
-from htmlnode import HTMLNode
+from htmlnode import HTMLNode, LeafNode
 
 
 class TestHTMLNode(unittest.TestCase):
@@ -52,3 +52,28 @@ class TestHTMLNode(unittest.TestCase):
     def test_empty_props(self):
         node = HTMLNode("a", "blah blah blah blah", "", {})
         self.assertEqual(node.props_to_html(), "")
+
+
+class TestLeafNode(unittest.TestCase):
+    def test_a_tag(self):
+        node = LeafNode("a", "Clicky clicky!", {"href": "https://www.google.com"})
+        self.assertEqual(
+            node.to_html(), '<a href="https://www.google.com">Clicky clicky!</a>'
+        )
+
+    def test_p_tag(self):
+        node = LeafNode(
+            "p", "This is a test of your local emergency radio broadcasting system"
+        )
+        self.assertEqual(
+            node.to_html(),
+            "<p>This is a test of your local emergency radio broadcasting system</p>",
+        )
+
+    def test_no_tag(self):
+        node = LeafNode(None, "It's alyways just been text anyway")
+        self.assertEqual(node.to_html(), "It's alyways just been text anyway")
+
+    def test_no_val(self):
+        node = LeafNode("img", None, {"src": "image.png", "alt": "An image"})
+        self.assertEqual(node.to_html(), '<img src="image.png" alt="An image" />')
