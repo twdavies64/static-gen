@@ -1,6 +1,6 @@
 import sys
 from textnode import TextNode, TextType
-from htmlnode import HTMLNode, LeafNode
+from htmlnode import HTMLNode, LeafNode, ParentNode
 
 
 def main():
@@ -18,11 +18,24 @@ def main():
     link_test = LeafNode(
         "a", "Clicky clicky!", {"href": "https://www.google.com", "target": "_blank"}
     )
-    print(bob)
-    print(link)
-    print(link.props_to_html())
-    print(lief.to_html())
-    print(link_test.to_html())
+
+    node = ParentNode(
+        "p",
+        [
+            LeafNode("b", "Bold text"),
+            LeafNode(None, "Normal text"),
+            LeafNode("i", "italic text"),
+            LeafNode(None, "Normal text"),
+        ],
+    )
+
+    # print(bob)
+    # print(link)
+    # print(link.props_to_html())
+    # print(lief.to_html())
+    # print(link_test.to_html())
+
+    print(node.to_html())
 
     return 0
 
