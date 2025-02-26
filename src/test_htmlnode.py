@@ -268,3 +268,7 @@ class TestParentNode(unittest.TestCase):
     #         {"class": "outer"}
     #     )
     #     print(node.to_html())
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -1,33 +1,41 @@
 import sys
 from textnode import TextNode, TextType
 from htmlnode import HTMLNode, LeafNode, ParentNode
+from split_nodes_delimiter import split_nodes_delimiter
 
 
 def main():
-    bob = TextNode("This is only a test", TextType.BOLD, "https://www.boot.dev")
-    link = HTMLNode(
-        "a",
-        "blah blah blah blah",
-        "",
-        {
-            "href": "https://www.google.com",
-            "target": "_blank",
-        },
-    )
-    lief = LeafNode("p", "This is some text for this paragraph")
-    link_test = LeafNode(
-        "a", "Clicky clicky!", {"href": "https://www.google.com", "target": "_blank"}
-    )
+    print("You pass butter")
 
-    node = ParentNode(
-        "p",
-        [
-            LeafNode("b", "Bold text"),
-            LeafNode(None, "Normal text"),
-            LeafNode("i", "italic text"),
-            LeafNode(None, "Normal text"),
-        ],
-    )
+    node = TextNode("This is text with a `code block` word", TextType.TEXT)
+    new_nodes = split_nodes_delimiter([node], "`", TextType.CODE)
+
+    # print(text_node_to_html_node(text_node))
+
+    # bob = TextNode("This is only a test", TextType.BOLD, "https://www.boot.dev")
+    # link = HTMLNode(
+    #     "a",
+    #     "blah blah blah blah",
+    #     "",
+    #     {
+    #         "href": "https://www.google.com",
+    #         "target": "_blank",
+    #     },
+    # )
+    # lief = LeafNode("p", "This is some text for this paragraph")
+    # link_test = LeafNode(
+    #     "a", "Clicky clicky!", {"href": "https://www.google.com", "target": "_blank"}
+    # )
+
+    # node = ParentNode(
+    #     "p",
+    #     [
+    #         LeafNode("b", "Bold text"),
+    #         LeafNode(None, "Normal text"),
+    #         LeafNode("i", "italic text"),
+    #         LeafNode(None, "Normal text"),
+    #     ],
+    # )
 
     # print(bob)
     # print(link)
@@ -35,7 +43,7 @@ def main():
     # print(lief.to_html())
     # print(link_test.to_html())
 
-    print(node.to_html())
+    # print(node.to_html())
 
     return 0
 
