@@ -1,14 +1,16 @@
 import sys
 from textnode import TextNode, TextType
 from htmlnode import HTMLNode, LeafNode, ParentNode
-from split_nodes_delimiter import split_nodes_delimiter
+from splitnodes import split_nodes_delimiter
 
 
 def main():
     print("You pass butter")
 
-    node = TextNode("This is text with a `code block` word", TextType.TEXT)
-    new_nodes = split_nodes_delimiter([node], "`", TextType.CODE)
+    # node = TextNode("This is text with some **very bold** words", TextType.TEXT)
+    # new_nodes = split_nodes_delimiter([node], "**", TextType.BOLD)
+
+    # print(new_nodes)
 
     # print(text_node_to_html_node(text_node))
 
