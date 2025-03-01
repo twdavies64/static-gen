@@ -1,12 +1,12 @@
 import sys
 from textnode import TextNode, TextType
 from htmlnode import HTMLNode, LeafNode, ParentNode
-from splitnodes import split_nodes_delimiter
 from inline_markdown import (
-    extract_markdown_images,
-    extract_markdown_links,
+    split_nodes_delimiter,
     split_nodes_image,
     split_nodes_link,
+    extract_markdown_images,
+    extract_markdown_links,
 )
 
 
