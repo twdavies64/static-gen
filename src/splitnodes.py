@@ -5,7 +5,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
 
     new_nodes = []
     for node in old_nodes:
-        count = 0
+
         length = len(delimiter)
         if node.text_type is not TextType.TEXT:
             new_nodes.append(node)
