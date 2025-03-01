@@ -4,31 +4,48 @@ from textnode import TextNode, TextType
 
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
-
     new_nodes = []
+    if not delimiter:
+        raise Exception("Invalid Markdown Syntax")
     for node in old_nodes:
-
         length = len(delimiter)
         if node.text_type is not TextType.TEXT:
             new_nodes.append(node)
             continue
+
+        # Find first delimiter
         start = node.text.find(delimiter)
-        end = node.text.find(delimiter, start + length)
-        if start == -1 and end == -1:
+        if start == -1:
             new_nodes.append(node)
             continue
-        if start != -1 and end == -1:
+
+        # Find matching delimiter
+        end = node.text.find(delimiter, start + length)
+        if end == -1:
+            # Still raise exception for unmatched delimiter
             raise Exception("Invalid Markdown Syntax")
-        if node.text.find(delimiter, end + length) != -1:
-            raise Exception("wrong number of delimiters")
+
+        # Process text before first delimiter
         if start > 0:
-            new_nodes.append(TextNode(node.text[:start], node.text_type))
+            new_nodes.append(TextNode(node.text[:start], TextType.TEXT))
+
+        # Process delimited text
         middle = node.text[(start + length) : end]
         if text_type != TextType.CODE and middle.strip() == "":
             middle = ""
         new_nodes.append(TextNode(middle, text_type))
+
+        # Recursively process any remaining text
         if end + length < len(node.text):
-            new_nodes.append(TextNode(node.text[(end + length) :], node.text_type))
+            # The key change: recursively process the remaining text
+            remaining_text = node.text[(end + length) :]
+            # Create a temporary node with the remaining text
+            temp_node = TextNode(remaining_text, TextType.TEXT)
+            # Recursively process this node with the same delimiter and text type
+            recursive_result = split_nodes_delimiter([temp_node], delimiter, text_type)
+            # Add the results to our output
+            new_nodes.extend(recursive_result)
+
     return new_nodes
 
 

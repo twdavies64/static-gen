@@ -52,14 +52,20 @@ class TestSplitNodes(unittest.TestCase):
             # No delimiters
             node = TextNode("plain text", TextType.TEXT)
             new_nodes = split_nodes_delimiter([node], "", TextType.ITALIC)
-        self.assertTrue("wrong number of delimiters" in str(context.exception))
+        self.assertTrue("Invalid Markdown Syntax" in str(context.exception))
 
-    def test_too_many_delim(self):
-        with self.assertRaises(Exception) as context:
-            # Too many delimiters
-            node = TextNode("**one** **two**", TextType.TEXT)
-            new_nodes = split_nodes_delimiter([node], "", TextType.ITALIC)
-        self.assertTrue("wrong number of delimiters" in str(context.exception))
+    def test_multiple_delim(self):
+        # Test that multiple delimiter pairs are handled correctly
+        node = TextNode("**one** **two**", TextType.TEXT)
+        new_nodes = split_nodes_delimiter([node], "**", TextType.BOLD)
+
+        self.assertEqual(len(new_nodes), 3)
+        self.assertEqual(new_nodes[0].text, "one")
+        self.assertEqual(new_nodes[0].text_type, TextType.BOLD)
+        self.assertEqual(new_nodes[1].text, " ")
+        self.assertEqual(new_nodes[1].text_type, TextType.TEXT)
+        self.assertEqual(new_nodes[2].text, "two")
+        self.assertEqual(new_nodes[2].text_type, TextType.BOLD)
 
     def test_split_nodes_delimiter(self):
         # Test 1: No delimiters - should keep text as-is
@@ -94,12 +100,6 @@ class TestSplitNodes(unittest.TestCase):
         self.assertEqual(len(new_nodes4), 1)
         self.assertEqual(new_nodes4[0].text, "Hello *world*")
         self.assertEqual(new_nodes4[0].text_type, TextType.BOLD)
-
-    def test_split_nodes_delimiter_multiple_pairs(self):
-        # Test 5: Multiple delimited sections - should raise exception
-        node5 = TextNode("Hello *world* *today*", TextType.TEXT)
-        with self.assertRaises(Exception):
-            split_nodes_delimiter([node5], "*", TextType.ITALIC)
 
     def test_split_nodes_delimiter_multiple_nodes(self):
         # Test 6: Multiple nodes input
