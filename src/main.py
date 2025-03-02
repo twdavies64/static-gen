@@ -2,6 +2,7 @@ import sys
 from textnode import TextNode, TextType
 from htmlnode import HTMLNode, LeafNode, ParentNode
 from text_to_nodes import text_to_textnodes
+from block_markdown import markdown_to_blocks
 from inline_markdown import (
     split_nodes_delimiter,
     split_nodes_image,
@@ -14,9 +15,20 @@ from inline_markdown import (
 def main():
     print("You pass butter")
 
-    text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+    # md = """
+    # ```python
+    # def hello_world():
+    #     print("Hello, world!")
+    # ```
 
-    print(text_to_textnodes(text))
+    # Next block here.
+    # """
+    # blocks = markdown_to_blocks(md)
+    # print(blocks)
+
+    # text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+
+    # print(text_to_textnodes(text))
 
     # text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
     # print(extract_markdown_images(text))
