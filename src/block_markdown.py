@@ -1,38 +1,27 @@
-from functools import reduce
-import re
-
-SUBSTRINGS_TO_STRIP = ["\t"]
-
-
-def normalize_code_block(block_lines):
-    """Normalize the indentation of a multi-line code block."""
-    if len(block_lines) <= 2:  # If there's no meaningful body, return as-is
-        return block_lines
-    body_lines = block_lines[1:-1]  # Extract the body (excluding backticks)
-    min_indent = min(
-        (len(line) - len(line.lstrip()) for line in body_lines if line.strip()),
-        default=0,
-    )
-    normalized_body = [line[min_indent:] for line in body_lines]
-    return [block_lines[0].strip()] + normalized_body + [block_lines[-1].strip()]
-
-
 def markdown_to_blocks(markdown):
-    blocks = [block.strip() for block in markdown.split("\n\n") if block.strip()]
-    final = []
+    """
+    Split markdown text into blocks based on blank lines.
+    Strips leading/trailing whitespace from each line.
+    """
+    if not markdown:
+        return []
 
-    for block in blocks:
-        if block.startswith("```"):  # It's a code block
-            block_lines = block.split("\n")
-            final.append("\n".join(normalize_code_block(block_lines)))
-        else:  # It's a regular markdown block
-            cleaned_block = reduce(
-                lambda x, sub: x.replace(sub, ""), SUBSTRINGS_TO_STRIP, block
-            )
-            cleaned_block = "\n".join(
-                re.sub(r"\s{2,}", " ", line).lstrip()
-                for line in cleaned_block.split("\n")
-            )
-            final.append(cleaned_block)
+    # Split into lines
+    lines = markdown.splitlines()
+    blocks = []
+    current_block_lines = []
 
-    return final
+    for line in lines:
+        if line.strip():  # Line has content after stripping
+            current_block_lines.append(line.strip())  # Strip each line
+        elif current_block_lines:  # Empty line and we have a block to finish
+            block = "\n".join(current_block_lines)
+            blocks.append(block)
+            current_block_lines = []
+
+    # Process the last block if any
+    if current_block_lines:
+        block = "\n".join(current_block_lines)
+        blocks.append(block)
+
+    return blocks
